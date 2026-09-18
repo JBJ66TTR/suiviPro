@@ -271,3 +271,138 @@ function escapeHTML(value) {
 // =========================
 
 displayLeads();
+// =========================
+// PIPELINE KANBAN
+// =========================
+
+function displayPipeline() {
+
+    const columns = {
+        "Nouveau": "column-nouveau",
+        "Contacté": "column-contacte",
+        "Intéressé": "column-interesse",
+        "Client": "column-client",
+        "Perdu": "column-perdu"
+    };
+
+    const counters = {
+        "Nouveau": "count-nouveau",
+        "Contacté": "count-contacte",
+        "Intéressé": "count-interesse",
+        "Client": "count-client",
+        "Perdu": "count-perdu"
+    };
+
+    Object.values(columns).forEach(id => {
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.innerHTML = "";
+        }
+    });
+
+    Object.values(counters).forEach(id => {
+        const element = document.getElementById(id);
+
+        if (element) {
+            element.textContent = "0";
+        }
+    });
+
+    leads.forEach(lead => {
+
+        const column = document.getElementById(columns[lead.status]);
+        const counter = document.getElementById(counters[lead.status]);
+
+        if (!column) {
+            return;
+        }
+
+        const card = document.createElement("div");
+
+        card.className = "pipeline-card";
+
+        card.innerHTML = `
+            <div class="pipeline-card-name">
+                ${escapeHTML(lead.name)}
+            </div>
+
+            <div class="pipeline-card-company">
+                ${escapeHTML(
+                    lead.company || "Entreprise non renseignée"
+                )}
+            </div>
+
+            ${
+                lead.followUp
+                ? `
+                    <div class="pipeline-card-date">
+                        📅 Relance : ${formatDate(lead.followUp)}
+                    </div>
+                `
+                : ""
+            }
+
+            <select onchange="changeLeadStatus('${lead.id}', this.value)">
+
+                <option value="Nouveau"
+                    ${lead.status === "Nouveau" ? "selected" : ""}>
+                    Nouveau
+                </option>
+
+                <option value="Contacté"
+                    ${lead.status === "Contacté" ? "selected" : ""}>
+                    Contacté
+                </option>
+
+                <option value="Intéressé"
+                    ${lead.status === "Intéressé" ? "selected" : ""}>
+                    Intéressé
+                </option>
+
+                <option value="Client"
+                    ${lead.status === "Client" ? "selected" : ""}>
+                    Client
+                </option>
+
+                <option value="Perdu"
+                    ${lead.status === "Perdu" ? "selected" : ""}>
+                    Perdu
+                </option>
+
+            </select>
+        `;
+
+        column.appendChild(card);
+
+        counter.textContent =
+            parseInt(counter.textContent) + 1;
+    });
+}
+
+// =========================
+// CHANGER LE STATUT
+// =========================
+
+function changeLeadStatus(id, newStatus) {
+
+    const lead = leads.find(lead => lead.id === id);
+
+    if (!lead) {
+        return;
+    }
+
+    lead.status = newStatus;
+
+    saveLeads();
+
+    displayLeads();
+
+    displayPipeline();
+}
+
+// =========================
+// INITIALISER LE PIPELINE
+// =========================
+
+displayPipeline();
