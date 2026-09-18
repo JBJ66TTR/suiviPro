@@ -410,7 +410,6 @@ console.log("SuiviPro fonctionne !");
 // =========================
 // RAPPELS DE RELANCE
 // =========================
-
 function displayReminders() {
 
     const remindersList = document.getElementById("remindersList");
@@ -421,13 +420,24 @@ function displayReminders() {
 
     remindersList.innerHTML = "";
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    // Date d'aujourd'hui sans problème de fuseau horaire
+    const now = new Date();
+
+    const todayString =
+        now.getFullYear() +
+        "-" +
+        String(now.getMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(now.getDate()).padStart(2, "0");
+
+    const today = new Date(
+        todayString + "T00:00:00"
+    );
 
     const reminders = leads
         .filter(lead => lead.followUp)
         .sort((a, b) => {
-            return new Date(a.followUp) - new Date(b.followUp);
+            return a.followUp.localeCompare(b.followUp);
         });
 
     if (reminders.length === 0) {
@@ -444,65 +454,86 @@ function displayReminders() {
 
     reminders.forEach(lead => {
 
-        const date = new Date(lead.followUp + "T00:00:00");
-        date.setHours(0, 0, 0, 0);
+        // La date choisie dans le formulaire
+        const followUpDate = new Date(
+            lead.followUp + "T00:00:00"
+        );
 
-        const difference =
-            Math.round(
-                (date - today) / (1000 * 60 * 60 * 24)
-            );
+        // Nombre de jours entre aujourd'hui et la relance
+        const difference = Math.round(
+            (followUpDate - today) /
+            (1000 * 60 * 60 * 24)
+        );
 
         let className = "reminder-future";
         let labelClass = "future";
         let label = "À venir";
 
+        // Aujourd'hui
         if (difference === 0) {
+
             className = "reminder-today";
             labelClass = "today";
             label = "À relancer aujourd'hui";
+
         }
+
+        // Demain
+        else if (difference === 1) {
+
+            className = "reminder-future";
+            labelClass = "future";
+            label = "À relancer demain";
+
+        }
+
+        // En retard
         else if (difference < 0) {
+
             className = "reminder-overdue";
             labelClass = "overdue";
             label = "Relance en retard";
+
         }
-        else if (difference === 1) {
-            label = "À relancer demain";
+
+        // Dans plusieurs jours
+        else {
+
+            label = "À venir";
         }
 
         const card = document.createElement("div");
 
-        card.className = `reminder-card ${className}`;
+        card.className =
+            `reminder-card ${className}`;
 
         card.innerHTML = `
             <div class="reminder-info">
+
                 <strong>
                     ${escapeHTML(lead.name)}
                 </strong>
 
                 <span>
                     ${escapeHTML(
-                        lead.company || "Entreprise non renseignée"
+                        lead.company ||
+                        "Entreprise non renseignée"
                     )}
                 </span>
+
             </div>
 
             <div class="reminder-label ${labelClass}">
+
                 ${label}
+
                 <br>
+
                 ${formatDate(lead.followUp)}
+
             </div>
         `;
 
         remindersList.appendChild(card);
     });
 }
-
-
-// =========================
-// DÉMARRAGE DE SUIVIPRO
-// =========================
-
-displayLeads();
-displayPipeline();
-displayReminders();
