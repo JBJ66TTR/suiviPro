@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -14,36 +14,261 @@
 
     <link rel="stylesheet" href="style.css">
 
+    <style>
+
+        /* =========================
+           PAGE AUTHENTIFICATION
+        ========================= */
+
+        .auth-page {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #f5f7fb;
+
+            padding: 25px;
+        }
+
+
+        .auth-container {
+            width: 100%;
+            max-width: 430px;
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 18px;
+
+            border: 1px solid #e5e7eb;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.06);
+        }
+
+
+        .auth-logo {
+            text-align: center;
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+            color: #2563eb;
+
+            margin-bottom: 30px;
+        }
+
+
+        .auth-container h1 {
+            text-align: center;
+
+            font-size: 26px;
+
+            margin-bottom: 8px;
+        }
+
+
+        .auth-subtitle {
+            text-align: center;
+
+            color: #6b7280;
+
+            font-size: 14px;
+
+            margin-bottom: 30px;
+        }
+
+
+        #authForm {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+
+        #authForm label {
+            font-size: 14px;
+
+            font-weight: 600;
+
+            color: #374151;
+
+            margin-top: 5px;
+        }
+
+
+        #authForm input {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+
+        #authForm input:focus {
+            border-color: #2563eb;
+
+            box-shadow:
+                0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+
+        #authButton {
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #2563eb;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        #authButton:hover {
+            background: #1d4ed8;
+        }
+
+
+        #authButton:disabled {
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+
+        .auth-message {
+            min-height: 22px;
+
+            margin-top: 15px;
+
+            text-align: center;
+
+            font-size: 13px;
+
+            color: #dc2626;
+        }
+
+
+        .auth-switch {
+            text-align: center;
+
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #e5e7eb;
+
+            font-size: 13px;
+
+            color: #6b7280;
+        }
+
+
+        #switchButton {
+            border: none;
+
+            background: none;
+
+            color: #2563eb;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            padding: 0;
+
+            margin-left: 5px;
+        }
+
+
+        #switchButton:hover {
+            color: #1d4ed8;
+        }
+
+
+        @media (max-width: 500px) {
+
+            .auth-container {
+                padding: 30px 22px;
+            }
+
+            .auth-container h1 {
+                font-size: 23px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 
 <body class="auth-page">
 
+
     <div class="auth-container">
+
 
         <div class="auth-logo">
             SuiviPro
         </div>
 
+
         <h1 id="authTitle">
             Bienvenue sur SuiviPro
         </h1>
 
-        <p class="auth-subtitle" id="authSubtitle">
+
+        <p
+            class="auth-subtitle"
+            id="authSubtitle"
+        >
             Connectez-vous pour accéder à votre espace.
         </p>
 
 
         <form id="authForm">
 
+
             <label for="email">
                 Email
             </label>
+
 
             <input
                 type="email"
                 id="email"
                 placeholder="vous@exemple.com"
+                autocomplete="email"
                 required
             >
 
@@ -52,17 +277,23 @@
                 Mot de passe
             </label>
 
+
             <input
                 type="password"
                 id="password"
                 placeholder="Votre mot de passe"
+                autocomplete="current-password"
                 required
             >
 
 
-            <button type="submit" id="authButton">
+            <button
+                type="submit"
+                id="authButton"
+            >
                 Se connecter
             </button>
+
 
         </form>
 
@@ -75,9 +306,11 @@
 
         <div class="auth-switch">
 
+
             <span id="switchText">
                 Vous n'avez pas encore de compte ?
             </span>
+
 
             <button
                 type="button"
@@ -86,14 +319,23 @@
                 Créer un compte
             </button>
 
+
         </div>
+
 
     </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth.js"></script>
+
+    <!-- Supabase -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- Notre code -->
+
+    <script src="auth.js"></script>
+
 
 </body>
 
 </html>
-  
