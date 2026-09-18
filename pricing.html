@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Tarifs - SuiviPro</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            SuiviPro
+        </div>
+
+        <a href="index.html" class="back-link">
+            ← Retour au tableau de bord
+        </a>
+
+    </header>
+
+
+    <main class="pricing-page">
+
+        <div class="pricing-title">
+
+            <h1>
+                Choisissez votre forfait
+            </h1>
+
+            <p>
+                Commencez gratuitement et passez à Pro quand vous en avez besoin.
+            </p>
+
+        </div>
+
+
+        <div class="pricing-container">
+
+
+            <!-- GRATUIT -->
+
+            <div class="pricing-card">
+
+                <h2>
+                    Gratuit
+                </h2>
+
+                <div class="price">
+                    0 €
+                    <span>/mois</span>
+                </div>
+
+                <p class="pricing-description">
+                    Pour découvrir SuiviPro.
+                </p>
+
+                <ul>
+
+                    <li>✓ Jusqu'à 20 prospects</li>
+
+                    <li>✓ Pipeline commercial</li>
+
+                    <li>✓ Relances</li>
+
+                    <li>✓ Recherche de prospects</li>
+
+                </ul>
+
+                <a
+                    href="index.html"
+                    class="pricing-button secondary"
+                >
+                    Commencer gratuitement
+                </a>
+
+            </div>
+
+
+            <!-- PRO -->
+
+            <div class="pricing-card popular">
+
+                <div class="popular-label">
+                    POPULAIRE
+                </div>
+
+                <h2>
+                    Pro
+                </h2>
+
+                <div class="price">
+                    4 €
+                    <span>/mois</span>
+                </div>
+
+                <p class="pricing-description">
+                    Pour les professionnels qui veulent aller plus loin.
+                </p>
+
+                <ul>
+
+                    <li>✓ Prospects illimités</li>
+
+                    <li>✓ Pipeline commercial</li>
+
+                    <li>✓ Relances</li>
+
+                    <li>✓ Recherche avancée</li>
+
+                    <li>✓ Toutes les futures fonctionnalités Pro</li>
+
+                </ul>
+
+                <button
+                    class="pricing-button primary"
+                    onclick="choosePro()"
+                >
+                    Passer à Pro
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+
+        function choosePro() {
+
+            alert(
+                "Le paiement SuiviPro Pro sera bientôt disponible."
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
