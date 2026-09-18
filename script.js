@@ -407,3 +407,105 @@ function changeLeadStatus(id, newStatus) {
 
 displayPipeline();
 console.log("SuiviPro fonctionne !");
+// =========================
+// RAPPELS DE RELANCE
+// =========================
+
+function displayReminders() {
+
+    const remindersList = document.getElementById("remindersList");
+
+    if (!remindersList) {
+        return;
+    }
+
+    remindersList.innerHTML = "";
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const reminders = leads
+        .filter(lead => lead.followUp)
+        .sort((a, b) => {
+            return new Date(a.followUp) - new Date(b.followUp);
+        });
+
+    if (reminders.length === 0) {
+
+        remindersList.innerHTML = `
+            <div class="no-reminders">
+                <div style="font-size: 30px;">✅</div>
+                <p>Aucune relance prévue.</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    reminders.forEach(lead => {
+
+        const date = new Date(lead.followUp + "T00:00:00");
+        date.setHours(0, 0, 0, 0);
+
+        const difference =
+            Math.round(
+                (date - today) / (1000 * 60 * 60 * 24)
+            );
+
+        let className = "reminder-future";
+        let labelClass = "future";
+        let label = "À venir";
+
+        if (difference === 0) {
+
+            className = "reminder-today";
+            labelClass = "today";
+            label = "À relancer aujourd'hui";
+
+        } else if (difference < 0) {
+
+            className = "reminder-overdue";
+            labelClass = "overdue";
+            label = "Relance en retard";
+
+        } else if (difference === 1) {
+
+            label = "À relancer demain";
+        }
+
+        const card = document.createElement("div");
+
+        card.className = `reminder-card ${className}`;
+
+        card.innerHTML = `
+            <div class="reminder-info">
+
+                <strong>
+                    ${escapeHTML(lead.name)}
+                </strong>
+
+                <span>
+                    ${escapeHTML(
+                        lead.company || "Entreprise non renseignée"
+                    )}
+                </span>
+
+            </div>
+
+            <div class="reminder-label ${labelClass}">
+                ${label}
+                <br>
+                ${formatDate(lead.followUp)}
+            </div>
+        `;
+
+        remindersList.appendChild(card);
+    });
+}
+
+
+// =========================
+// INITIALISATION RAPPELS
+// =========================
+
+displayReminders();
