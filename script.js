@@ -457,19 +457,16 @@ function displayReminders() {
         let label = "À venir";
 
         if (difference === 0) {
-
             className = "reminder-today";
             labelClass = "today";
             label = "À relancer aujourd'hui";
-
-        } else if (difference < 0) {
-
+        }
+        else if (difference < 0) {
             className = "reminder-overdue";
             labelClass = "overdue";
             label = "Relance en retard";
-
-        } else if (difference === 1) {
-
+        }
+        else if (difference === 1) {
             label = "À relancer demain";
         }
 
@@ -479,7 +476,6 @@ function displayReminders() {
 
         card.innerHTML = `
             <div class="reminder-info">
-
                 <strong>
                     ${escapeHTML(lead.name)}
                 </strong>
@@ -489,7 +485,6 @@ function displayReminders() {
                         lead.company || "Entreprise non renseignée"
                     )}
                 </span>
-
             </div>
 
             <div class="reminder-label ${labelClass}">
@@ -505,7 +500,9 @@ function displayReminders() {
 
 
 // =========================
-// INITIALISATION RAPPELS
+// DÉMARRAGE DE SUIVIPRO
 // =========================
 
+displayLeads();
+displayPipeline();
 displayReminders();
