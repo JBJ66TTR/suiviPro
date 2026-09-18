@@ -1,7 +1,6 @@
-const SUPABASE_URL = "https://zrhxszzidolffnsqeoxy.supabase.co";
+ const SUPABASE_URL = "https://zrhxszzidolffnsqeoxy.supabase.co";
 
-const SUPABASE_KEY = "TA_PUBLISHABLE_KEY";
-
+const SUPABASE_KEY = "sb_publishable_gT80mru92Zgyjv-egB86ZQ_xVjcwpEU";
 
 const supabaseClient = supabase.createClient(
     SUPABASE_URL,
@@ -9,6 +8,7 @@ const supabaseClient = supabase.createClient(
 );
 
 
+// Éléments de la page
 const authForm = document.getElementById("authForm");
 const authButton = document.getElementById("authButton");
 const switchButton = document.getElementById("switchButton");
@@ -18,16 +18,24 @@ const authSubtitle = document.getElementById("authSubtitle");
 const switchText = document.getElementById("switchText");
 
 
+// Mode actuel
 let isSignup = false;
 
+
+// =========================
+// BASCULER CONNEXION / INSCRIPTION
+// =========================
 
 switchButton.addEventListener("click", function () {
 
     isSignup = !isSignup;
 
+    authMessage.textContent = "";
+
     if (isSignup) {
 
-        authTitle.textContent = "Créer votre compte";
+        authTitle.textContent =
+            "Créer votre compte";
 
         authSubtitle.textContent =
             "Commencez à gérer vos prospects avec SuiviPro.";
@@ -62,6 +70,10 @@ switchButton.addEventListener("click", function () {
 });
 
 
+// =========================
+// FORMULAIRE
+// =========================
+
 authForm.addEventListener("submit", async function (event) {
 
     event.preventDefault();
@@ -73,8 +85,36 @@ authForm.addEventListener("submit", async function (event) {
         document.getElementById("password").value;
 
 
-    authMessage.textContent = "Chargement...";
+    // Vérification simple
+    if (!email || !password) {
 
+        authMessage.textContent =
+            "Veuillez remplir tous les champs.";
+
+        return;
+    }
+
+
+    if (password.length < 6) {
+
+        authMessage.textContent =
+            "Le mot de passe doit contenir au moins 6 caractères.";
+
+        return;
+    }
+
+
+    authButton.disabled = true;
+
+    authButton.textContent =
+        "Chargement...";
+
+    authMessage.textContent = "";
+
+
+    // =========================
+    // INSCRIPTION
+    // =========================
 
     if (isSignup) {
 
@@ -87,37 +127,98 @@ authForm.addEventListener("submit", async function (event) {
 
         if (error) {
 
+            console.error(error);
+
             authMessage.textContent =
-                error.message;
+                "Erreur : " + error.message;
+
+            authButton.disabled = false;
+
+            authButton.textContent =
+                "Créer mon compte";
 
             return;
         }
+
+
+        console.log("Utilisateur créé :", data);
 
 
         authMessage.textContent =
-            "Compte créé ! Vérifiez votre email si Supabase demande une confirmation.";
-
-    } else {
-
-        const { data, error } =
-            await supabaseClient.auth.signInWithPassword({
-                email: email,
-                password: password
-            });
+            "Compte créé avec succès !";
 
 
-        if (error) {
+        authButton.disabled = false;
+
+        authButton.textContent =
+            "Créer mon compte";
+
+
+        /*
+        Selon les réglages Supabase,
+        un email de confirmation peut être demandé.
+        */
+
+
+        if (data.session) {
+
+            setTimeout(function () {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }, 1000);
+
+        } else {
 
             authMessage.textContent =
-                error.message;
-
-            return;
+                "Compte créé ! Vérifiez votre email pour confirmer votre compte.";
         }
 
+
+        return;
+    }
+
+
+    // =========================
+    // CONNEXION
+    // =========================
+
+    const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+
+    if (error) {
+
+        console.error(error);
+
+        authMessage.textContent =
+            "Email ou mot de passe incorrect.";
+
+        authButton.disabled = false;
+
+        authButton.textContent =
+            "Se connecter";
+
+        return;
+    }
+
+
+    console.log("Utilisateur connecté :", data);
+
+
+    authMessage.textContent =
+        "Connexion réussie !";
+
+
+    setTimeout(function () {
 
         window.location.href =
             "dashboard.html";
 
-    }
+    }, 500);
 
 });
