@@ -406,3 +406,4 @@ function changeLeadStatus(id, newStatus) {
 // =========================
 
 displayPipeline();
+console.log("SuiviPro fonctionne !");
