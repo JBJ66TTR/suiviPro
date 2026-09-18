@@ -105,7 +105,20 @@ function displayLeads() {
 if (leadForm) {
 
     leadForm.addEventListener("submit", function(event) {
+    event.preventDefault();
 
+    const isPro = localStorage.getItem("suivipro_pro") === "true";
+
+    if (!isPro && leads.length >= 20) {
+        alert(
+            "Vous avez atteint la limite de 20 prospects du forfait gratuit. " +
+            "Passez à SuiviPro Pro pour ajouter des prospects supplémentaires."
+        );
+        return;
+    }
+
+    // Le reste de ton code...
+});
         event.preventDefault();
 
         const name = document.getElementById("name").value.trim();
