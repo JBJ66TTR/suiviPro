@@ -133,15 +133,23 @@
 
     <script>
 
-        function choosePro() {
+       function choosePro() {
 
-            alert(
-                "Le paiement SuiviPro Pro sera bientôt disponible."
-            );
+    const confirmation = confirm(
+        "Activer SuiviPro Pro en mode démonstration ?"
+    );
 
-        }
+    if (confirmation) {
 
-    </script>
+        localStorage.setItem("suivipro_pro", "true");
+
+        alert(
+            "Félicitations ! SuiviPro Pro est maintenant activé."
+        );
+
+        window.location.href = "index.html";
+    }
+}
 
 </body>
 
